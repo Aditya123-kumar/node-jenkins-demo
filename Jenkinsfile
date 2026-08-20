@@ -10,23 +10,17 @@ pipeline {
             }
         }
 
-    stage('Install & Test') {
+   stage('Install & Test') {
     steps {
-        echo 'Checking Node.js version...'
-        bat 'node --version'
+        echo 'Running tests inside Node 10 Docker container...'
 
-        echo 'Checking npm version...'
-        bat 'npm --version'
-
-        echo 'Checking npm path...'
-        bat 'where node'
-        bat 'where npm'
-
-        echo 'Installing dependencies...'
-        bat 'npm install'
-
-        echo 'Running tests...'
-        bat 'npm test'
+        bat '''
+            docker run --rm ^
+              -v "%CD%:/usr/src/app" ^
+              -w /usr/src/app ^
+              node:10 ^
+              sh -c "npm install && npm test"
+        '''
     }
 }
 
