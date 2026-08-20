@@ -10,16 +10,23 @@ pipeline {
             }
         }
 
-      stage('Install & Test') {
+    stage('Install & Test') {
     steps {
+        echo 'Checking Node.js version...'
+        bat 'node --version'
+
+        echo 'Checking npm version...'
+        bat 'npm --version'
+
+        echo 'Checking npm path...'
+        bat 'where node'
+        bat 'where npm'
+
         echo 'Installing dependencies...'
         bat 'npm install'
 
         echo 'Running tests...'
-        bat '''
-            npm test
-            echo TEST_EXIT_CODE=%ERRORLEVEL%
-        '''
+        bat 'npm test'
     }
 }
 
