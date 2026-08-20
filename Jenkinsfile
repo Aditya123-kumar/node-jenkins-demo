@@ -10,15 +10,18 @@ pipeline {
             }
         }
 
-        stage('Install & Test') {
-            steps {
-                echo 'Installing dependencies...'
-                bat 'npm install'
+      stage('Install & Test') {
+    steps {
+        echo 'Installing dependencies...'
+        bat 'npm install'
 
-                echo 'Running tests...'
-                bat 'npm test'
-            }
-        }
+        echo 'Running tests...'
+        bat '''
+            npm test
+            echo TEST_EXIT_CODE=%ERRORLEVEL%
+        '''
+    }
+}
 
         stage('Build Docker Image') {
             steps {
